@@ -14,8 +14,7 @@ namespace Program.Models
         public String ColorName { get; set; }
 
         public int ColorValue { get; set; }
-
-        public ICollection<Cards> Cards { get; set; }
+        
         public ICollection<ManaCosts> ManaCosts { get; set; }
 
     }

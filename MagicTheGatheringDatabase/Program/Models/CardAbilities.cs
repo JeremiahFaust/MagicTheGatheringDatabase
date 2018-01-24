@@ -6,17 +6,18 @@ using System.Text;
 
 namespace Program.Models
 {
-    class ManaCosts
+    class CardAbilities
     {
         [Key]
         public int ID { get; set; }
 
-        [ForeignKey("Color")]
-        public int ColorID { get; set; }
-        public Color Color { get; set; }
+        [ForeignKey("Ability")]
+        public int AbilityID { get; set; }
+        public Abilities Ability { get; set; }
 
         [ForeignKey("Card")]
         public int CardID { get; set; }
         public Cards Card { get; set; }
+
     }
 }

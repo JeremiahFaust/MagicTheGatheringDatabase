@@ -16,6 +16,8 @@ namespace Program
         public DbSet<Abilities> Abilities { get; set; }
         public DbSet<Rulings> Rulings { get; set; }
         public DbSet<Color> Color { get; set; }
+        public DbSet<CardAbilities> CardAbilities { get; set; }
+        public DbSet<CardAbilities> CardTypes { get; set; }
 
         public MagicContext(DbContextOptions<MagicContext> options) : base(options)
         {
@@ -31,6 +33,8 @@ namespace Program
             modelBuilder.Entity<Abilities>().ToTable("Abilities");
             modelBuilder.Entity<Rulings>().ToTable("Rulings");
             modelBuilder.Entity<Color>().ToTable("Color");
+            modelBuilder.Entity<CardAbilities>().ToTable("CardAbilities");
+            modelBuilder.Entity<CardTypes>().ToTable("CardTypes");
 
 
         }

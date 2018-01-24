@@ -6,14 +6,14 @@ using System.Text;
 
 namespace Program.Models
 {
-    class ManaCosts
+    class CardTypes
     {
         [Key]
         public int ID { get; set; }
 
-        [ForeignKey("Color")]
-        public int ColorID { get; set; }
-        public Color Color { get; set; }
+        [ForeignKey("Type")]
+        public int TypeID { get; set; }
+        public Types Type { get; set; }
 
         [ForeignKey("Card")]
         public int CardID { get; set; }

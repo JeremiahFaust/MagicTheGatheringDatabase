@@ -12,7 +12,7 @@ namespace Program.Models
 
         public String Ability { get; set; }
 
-        public ICollection<Cards> Cards { get; set; }
+        public ICollection<CardAbilities> CardAbilities { get; set; }
 
     }
 }
