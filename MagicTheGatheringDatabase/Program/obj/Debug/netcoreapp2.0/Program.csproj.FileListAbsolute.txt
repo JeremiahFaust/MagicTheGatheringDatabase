@@ -1,0 +1,11 @@
+C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\bin\Debug\netcoreapp2.0\Program.deps.json
+C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\bin\Debug\netcoreapp2.0\Program.runtimeconfig.json
+C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\bin\Debug\netcoreapp2.0\Program.runtimeconfig.dev.json
+C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\bin\Debug\netcoreapp2.0\Program.dll
+C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\bin\Debug\netcoreapp2.0\Program.pdb
+C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\obj\Debug\netcoreapp2.0\Program.csprojResolveAssemblyReference.cache
+C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\obj\Debug\netcoreapp2.0\Program.csproj.CoreCompileInputs.cache
+C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\obj\Debug\netcoreapp2.0\Program.AssemblyInfoInputs.cache
+C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\obj\Debug\netcoreapp2.0\Program.AssemblyInfo.cs
+C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\obj\Debug\netcoreapp2.0\Program.dll
+C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\obj\Debug\netcoreapp2.0\Program.pdb

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Program
 {
@@ -6,7 +7,11 @@ namespace Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            DbContextOptionsBuilder<MagicContext> dbContextOptions = new DbContextOptionsBuilder<MagicContext>();
+
+            dbContextOptions.UseSqlite("Data Source=MagicDB.db", providerOptions => providerOptions.CommandTimeout(60));
+
+            MagicContext ctx = new MagicContext(dbContextOptions.Options);
         }
     }
 }
