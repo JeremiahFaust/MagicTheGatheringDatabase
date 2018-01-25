@@ -15,8 +15,8 @@ namespace MagicDbContext.Models
         [Required]
         public String CardName { get; set; }
 
-        [ForeignKey("Sets")]
         public int SetID { get; set; }
+        [ForeignKey("SetID")]
         public Sets Set { get; set; }
         
 
@@ -48,7 +48,7 @@ namespace MagicDbContext.Models
         public ICollection<Rulings> Rulings { get; set; }
         public ICollection<CardAbilities> CardAbilities { get; set; }
         public ICollection<ManaCosts> ManaCosts { get; set; }
-        public String CardType { get; set; }
+        public ICollection<CardTypes> CardTypes { get; set; }
 
         public double LowPrice { get; set; }
         public double MidPrice { get; set; }

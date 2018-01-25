@@ -8,10 +8,10 @@ namespace MagicDbContext.Models
     public class Types
     {
         [Key]
-        public int ID { get; set; }
+        public int TypeID { get; set; }
 
         public String TypeName { get; set; }
 
-        public ICollection<Cards> Cards { get; set; }
+        public ICollection<CardTypes> CardTypes { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace MagicDbContext.Models
     public class Sets
     {
         [Key]
-        public int ID { get; set; }
+        public int SetID { get; set; }
 
         public String SetAbbr { get; set; }
 

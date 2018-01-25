@@ -9,7 +9,7 @@ namespace MagicDbContext.Models
     public class ManaCosts
     {
         [Key]
-        public int ID { get; set; }
+        public int ManaCostID { get; set; }
 
         [ForeignKey("Color")]
         public int ColorID { get; set; }

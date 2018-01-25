@@ -8,3 +8,4 @@ C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Pro
 C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\obj\Debug\netcoreapp2.0\MagicDbContext.AssemblyInfo.cs
 C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\obj\Debug\netcoreapp2.0\MagicDbContext.dll
 C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\obj\Debug\netcoreapp2.0\MagicDbContext.pdb
+C:\Users\jd\Source\Repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Program\obj\Debug\netcoreapp2.0\MagicDbContext.csprojResolveAssemblyReference.cache

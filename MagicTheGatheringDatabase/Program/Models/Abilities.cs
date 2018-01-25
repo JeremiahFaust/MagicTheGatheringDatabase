@@ -8,7 +8,7 @@ namespace MagicDbContext.Models
     public class Abilities
     {
         [Key]
-        public int ID { get; set; }
+        public int AbilityID { get; set; }
 
         public String Ability { get; set; }
 

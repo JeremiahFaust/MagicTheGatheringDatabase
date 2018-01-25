@@ -8,7 +8,7 @@ namespace MagicDbContext.Models
     public class Color
     {
         [Key]
-        public int ID { get; set; }
+        public int ColorID { get; set; }
 
         public char ColorSymbol { get; set; }
         public String ColorName { get; set; }

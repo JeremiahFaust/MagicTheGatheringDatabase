@@ -9,7 +9,7 @@ namespace MagicDbContext.Models
     public class Rulings
     {
         [Key]
-        public int ID { get; set; }
+        public int RulingsID { get; set; }
 
         public String Ruling { get; set; }
 
