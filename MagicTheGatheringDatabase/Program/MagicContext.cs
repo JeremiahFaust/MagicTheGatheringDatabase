@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Program.Models;
+using MagicDbContext.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Program
+namespace MagicDbContext
 {
-    class MagicContext : DbContext
+    public class MagicContext : DbContext
     {
 
         public DbSet<Cards> Cards { get; set; }
@@ -17,7 +17,7 @@ namespace Program
         public DbSet<Rulings> Rulings { get; set; }
         public DbSet<Color> Color { get; set; }
         public DbSet<CardAbilities> CardAbilities { get; set; }
-        public DbSet<CardAbilities> CardTypes { get; set; }
+        public DbSet<CardTypes> CardTypes { get; set; }
 
         public MagicContext(DbContextOptions<MagicContext> options) : base(options)
         {

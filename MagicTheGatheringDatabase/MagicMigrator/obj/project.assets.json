@@ -840,6 +840,20 @@
         "compile": {
           "ref/netstandard1.3/System.Threading.Tasks.dll": {}
         }
+      },
+      "MagicDbContext/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Sqlite": "2.0.1",
+          "Microsoft.NETCore.App": "2.0.0"
+        },
+        "compile": {
+          "bin/placeholder/MagicDbContext.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/MagicDbContext.dll": {}
+        }
       }
     }
   },
@@ -3152,10 +3166,16 @@
         "ref/xamarintvos10/_._",
         "ref/xamarinwatchos10/_._"
       ]
+    },
+    "MagicDbContext/1.0.0": {
+      "type": "project",
+      "path": "../Program/MagicDbContext.csproj",
+      "msbuildProject": "../Program/MagicDbContext.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "MagicDbContext >= 1.0.0",
       "Microsoft.EntityFrameworkCore.Sqlite >= 2.0.1",
       "Microsoft.NETCore.App >= 2.0.0"
     ]
@@ -3170,11 +3190,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\jd\\Source\\Repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\Program\\MagicDbContext.csproj",
-      "projectName": "MagicDbContext",
-      "projectPath": "C:\\Users\\jd\\Source\\Repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\Program\\MagicDbContext.csproj",
+      "projectUniqueName": "C:\\Users\\jd\\Source\\Repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\MagicMigrator\\MagicMigrator.csproj",
+      "projectName": "MagicMigrator",
+      "projectPath": "C:\\Users\\jd\\Source\\Repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\MagicMigrator\\MagicMigrator.csproj",
       "packagesPath": "C:\\Users\\jd\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jd\\Source\\Repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\Program\\obj\\",
+      "outputPath": "C:\\Users\\jd\\Source\\Repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\MagicMigrator\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -3192,7 +3212,11 @@
       },
       "frameworks": {
         "netcoreapp2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\jd\\Source\\Repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\Program\\MagicDbContext.csproj": {
+              "projectPath": "C:\\Users\\jd\\Source\\Repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\Program\\MagicDbContext.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

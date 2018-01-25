@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 
-namespace Program.Models
+namespace MagicDbContext.Models
 {
-    class Cards
+    public class Cards
     {
         [Key]
         public int MultiverseID { get; set; }
@@ -14,16 +15,14 @@ namespace Program.Models
         [Required]
         public String CardName { get; set; }
 
-        [Required]
+        [ForeignKey("Sets")]
         public int SetID { get; set; }
-        [Required]
         public Sets Set { get; set; }
-
-        public ICollection<CardTypes> Types { get; set; }
+        
 
         public String Rarity { get; set; }
 
-        public ICollection<ManaCosts> ManaCosts { get; set; }
+
         public int ConvertedManaCost                              
         {
             get
@@ -38,16 +37,18 @@ namespace Program.Models
         }
         public int Power { get; set; }
         public int Toughness { get; set; }
-
-        public ICollection<CardAbilities> CardAbilities { get; set; }
+        
 
         public String FlavorText { get; set; }
 
         public String Artist { get; set; }
 
         public int Rating { get; set; }
-
+        
         public ICollection<Rulings> Rulings { get; set; }
+        public ICollection<CardAbilities> CardAbilities { get; set; }
+        public ICollection<ManaCosts> ManaCosts { get; set; }
+        public String CardType { get; set; }
 
         public double LowPrice { get; set; }
         public double MidPrice { get; set; }

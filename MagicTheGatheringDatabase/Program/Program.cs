@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Program
+namespace MagicDbContext
 {
     class Program
     {

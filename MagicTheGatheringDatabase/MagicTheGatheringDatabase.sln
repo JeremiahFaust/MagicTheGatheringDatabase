@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Program", "Program\Program.csproj", "{383D3270-4F9B-4CC9-AD0E-D9E04D04916C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicDbContext", "Program\MagicDbContext.csproj", "{383D3270-4F9B-4CC9-AD0E-D9E04D04916C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicMigrator", "MagicMigrator\MagicMigrator.csproj", "{48F1DBD1-905D-4644-BC1B-5818139C167E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{383D3270-4F9B-4CC9-AD0E-D9E04D04916C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{383D3270-4F9B-4CC9-AD0E-D9E04D04916C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{383D3270-4F9B-4CC9-AD0E-D9E04D04916C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48F1DBD1-905D-4644-BC1B-5818139C167E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48F1DBD1-905D-4644-BC1B-5818139C167E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48F1DBD1-905D-4644-BC1B-5818139C167E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48F1DBD1-905D-4644-BC1B-5818139C167E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

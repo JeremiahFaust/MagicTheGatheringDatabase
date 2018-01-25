@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Program.Models
+namespace MagicDbContext.Models
 {
-    class Abilities
+    public class Abilities
     {
         [Key]
         public int ID { get; set; }

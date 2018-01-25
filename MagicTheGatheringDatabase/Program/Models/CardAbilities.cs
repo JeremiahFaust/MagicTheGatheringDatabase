@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Program.Models
+namespace MagicDbContext.Models
 {
-    class CardAbilities
+    public class CardAbilities
     {
         [Key]
         public int ID { get; set; }
