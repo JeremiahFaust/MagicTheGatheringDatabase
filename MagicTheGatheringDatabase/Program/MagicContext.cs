@@ -33,7 +33,7 @@ namespace MagicDbContext
             modelBuilder.Entity<CardTypes>()
                 .HasKey(cc => new { cc.CardID, cc.TypeID });
             modelBuilder.Entity<Rulings>()
-                .HasKey(cc => new { cc.CardID, cc.Date });
+                .HasKey(cc => new { cc.CardID, cc.Ruling });
 
             modelBuilder.Entity<Card>().ToTable("Cards");
             modelBuilder.Entity<Sets>().ToTable("Sets");

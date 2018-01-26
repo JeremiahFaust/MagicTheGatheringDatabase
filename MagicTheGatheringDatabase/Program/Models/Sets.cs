@@ -15,5 +15,9 @@ namespace MagicDbContext.Models
 
         public ICollection<Card> Cards { get; set; }
 
+        public override string ToString()
+        {
+            return SetAbbr + ": " + SetFullName;
+        }
     }
 }

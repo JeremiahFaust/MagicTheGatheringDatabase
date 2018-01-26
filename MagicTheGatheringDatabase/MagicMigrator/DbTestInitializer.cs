@@ -107,7 +107,7 @@ namespace MagicMigrator
 
             var Cards = new Card[]
             {
-                new Card { MultiverseID=423808, Artist="Kieran Yanner", CardName="Aegis Automaton", FlavorText="#_The streets of Ghirapur have become dangerous. It's good to have a dependable companion._#", HighPrice=0.95, LowPrice=0.01, MidPrice=0.1, Power= 0, Toughness=3, Rarity="C", Rating=5, SetID=FindSets("AER").SetAbbr}
+                new Card { MultiverseID="423808", Artist="Kieran Yanner", CardName="Aegis Automaton", FlavorText="#_The streets of Ghirapur have become dangerous. It's good to have a dependable companion._#", HighPrice=0.95, LowPrice=0.01, MidPrice=0.1, Power= 0, Toughness=3, Rarity="C", Rating=5, SetID=FindSets("AER").SetAbbr}
             };
 
             ctxt.Cards.AddRange(Cards);
@@ -115,9 +115,9 @@ namespace MagicMigrator
             
             var CardTypes = new CardTypes[]
             {
-                new MagicDbContext.Models.CardTypes{ TypeID=FindType("Artifact").ID, CardID=423808 },
-                new CardTypes { TypeID=FindType("Creature").ID, CardID=423808 },
-                new CardTypes { TypeID=FindType("Construct").ID, CardID=423808 }
+                new MagicDbContext.Models.CardTypes{ TypeID=FindType("Artifact").ID, CardID="423808" },
+                new CardTypes { TypeID=FindType("Creature").ID, CardID="423808" },
+                new CardTypes { TypeID=FindType("Construct").ID, CardID="423808" }
             };
 
             ctxt.CardTypes.AddRange(CardTypes);
@@ -125,7 +125,7 @@ namespace MagicMigrator
 
             var Rulings = new Rulings[]
             {
-                new Rulings{ CardID=423808, Ruling=""}
+                new Rulings{ CardID="423808", Ruling=""}
             };
 
             ctxt.Rulings.AddRange(Rulings);
@@ -133,7 +133,7 @@ namespace MagicMigrator
 
             var cardAbilities = new CardAbilities[]
             {
-                new CardAbilities{ AbilityID=FindAbility("{4}{W}: Return another target creature you control to its owner's hand.").AbilityID, CardID=423808}
+                new CardAbilities{ AbilityID=FindAbility("{4}{W}: Return another target creature you control to its owner's hand.").AbilityID, CardID="423808"}
             };
 
             ctxt.CardAbilities.AddRange(cardAbilities);
@@ -141,7 +141,7 @@ namespace MagicMigrator
 
             var manaCosts = new ManaCosts[]
             {
-                new ManaCosts { Quantity=2, ColorID=FindColor("Colorless").ID, CardID=423808 }
+                new ManaCosts { Quantity=2, ColorID=FindColor("Colorless").ID, CardID="423808" }
             };
 
             ctxt.ManaCosts.AddRange(manaCosts);

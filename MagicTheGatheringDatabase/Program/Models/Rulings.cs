@@ -13,7 +13,7 @@ namespace MagicDbContext.Models
         public DateTime Date { get; set; }
 
         [ForeignKey("Cards")]
-        public int CardID { get; set; }
+        public string CardID { get; set; }
         public Card Cards { get; set; }
     }
 }

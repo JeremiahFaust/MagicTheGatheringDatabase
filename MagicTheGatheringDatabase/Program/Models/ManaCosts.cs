@@ -8,7 +8,7 @@ namespace MagicDbContext.Models
 {
     public class ManaCosts
     {
-        public int CardID { get; set; }
+        public string CardID { get; set; }
         public int ColorID { get; set; }
         public int Quantity { get; set; }
 

@@ -12,7 +12,7 @@ namespace MagicDbContext.Models
     public class Card
     {
         [Key]
-        public int MultiverseID { get; set; }
+        public string MultiverseID { get; set; }
 
         [Required]
         public String CardName { get; set; }
@@ -47,5 +47,10 @@ namespace MagicDbContext.Models
         public double HighPrice { get; set; }
 
         public String ImagePath { get; set; }
+
+        public override string ToString()
+        {
+            return MultiverseID + ": " + CardName;
+        }
     }
 }
