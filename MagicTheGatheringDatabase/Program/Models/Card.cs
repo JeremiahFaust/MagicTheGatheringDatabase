@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace MagicDbContext.Models
 {
-    public class Cards
+    [Table("Cards")]
+    public class Card
     {
         [Key]
         public int MultiverseID { get; set; }
@@ -15,7 +17,8 @@ namespace MagicDbContext.Models
         [Required]
         public String CardName { get; set; }
 
-        public int SetID { get; set; }
+        [MaxLength(10)]
+        public string SetID { get; set; }
         [ForeignKey("SetID")]
         public Sets Set { get; set; }
         
@@ -23,18 +26,7 @@ namespace MagicDbContext.Models
         public String Rarity { get; set; }
 
 
-        public int ConvertedManaCost                              
-        {
-            get
-            {
-                int sum = 0;
-                foreach (ManaCosts c in ManaCosts)
-                {
-                    sum += c.Color.ColorValue;
-                }
-                return sum;
-            }
-        }
+        public int ConvertedManaCost { get; set; }
         public int Power { get; set; }
         public int Toughness { get; set; }
         
@@ -53,5 +45,7 @@ namespace MagicDbContext.Models
         public double LowPrice { get; set; }
         public double MidPrice { get; set; }
         public double HighPrice { get; set; }
+
+        public String ImagePath { get; set; }
     }
 }

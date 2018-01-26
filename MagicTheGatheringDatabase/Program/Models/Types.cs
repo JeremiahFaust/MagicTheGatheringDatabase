@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace MagicDbContext.Models
 {
+    [Table("Types")]
     public class Types
     {
         [Key]
-        public int TypeID { get; set; }
+        public int ID { get; set; }
 
-        public String TypeName { get; set; }
-
-        public ICollection<CardTypes> CardTypes { get; set; }
+        public String Name { get; set; }
+        
     }
 }

@@ -9,7 +9,7 @@ namespace MagicDbContext
     public class MagicContext : DbContext
     {
 
-        public DbSet<Cards> Cards { get; set; }
+        public DbSet<Card> Cards { get; set; }
         public DbSet<Sets> Sets { get; set; }
         public DbSet<Types> Types { get; set; }
         public DbSet<ManaCosts> ManaCosts { get; set; }
@@ -26,7 +26,16 @@ namespace MagicDbContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Cards>().ToTable("Cards");
+            modelBuilder.Entity<ManaCosts>()
+                .HasKey(cc => new { cc.CardID, cc.ColorID });
+            modelBuilder.Entity<CardAbilities>()
+                .HasKey(cc => new { cc.CardID, cc.AbilityID });
+            modelBuilder.Entity<CardTypes>()
+                .HasKey(cc => new { cc.CardID, cc.TypeID });
+            modelBuilder.Entity<Rulings>()
+                .HasKey(cc => new { cc.CardID, cc.Date });
+
+            modelBuilder.Entity<Card>().ToTable("Cards");
             modelBuilder.Entity<Sets>().ToTable("Sets");
             modelBuilder.Entity<Types>().ToTable("Types");
             modelBuilder.Entity<ManaCosts>().ToTable("ManaCosts");
@@ -36,7 +45,10 @@ namespace MagicDbContext
             modelBuilder.Entity<CardAbilities>().ToTable("CardAbilities");
             modelBuilder.Entity<CardTypes>().ToTable("CardTypes");
 
-
+            //modelBuilder.Entity<Cards>().HasMany(c => c.CardTypes);
+            //modelBuilder.Entity<Cards>().HasMany(m => m.ManaCosts);
+            //modelBuilder.Entity<Cards>().HasMany(a => a.CardAbilities);
+            //modelBuilder.Entity<Cards>().HasMany(r => r.Rulings).WithOne(c => c.Cards);
         }
     }
 }

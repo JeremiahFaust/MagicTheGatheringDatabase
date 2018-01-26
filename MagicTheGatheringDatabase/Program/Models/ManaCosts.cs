@@ -8,15 +8,14 @@ namespace MagicDbContext.Models
 {
     public class ManaCosts
     {
-        [Key]
-        public int ManaCostID { get; set; }
-
-        [ForeignKey("Color")]
+        public int CardID { get; set; }
         public int ColorID { get; set; }
+        public int Quantity { get; set; }
+
+        [ForeignKey("ColorID")]
         public Color Color { get; set; }
 
-        [ForeignKey("Card")]
-        public int CardID { get; set; }
-        public Cards Card { get; set; }
+        [ForeignKey("CardID")]
+        public Card Cards { get; set; }
     }
 }

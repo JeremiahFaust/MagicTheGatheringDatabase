@@ -7,16 +7,13 @@ using System.Text;
 namespace MagicDbContext.Models
 {
     public class CardTypes
-    {
-        [Key]
-        public int CardTypeID { get; set; }
-
+    { 
         [ForeignKey("Type")]
         public int TypeID { get; set; }
         public Types Type { get; set; }
 
         [ForeignKey("Card")]
         public int CardID { get; set; }
-        public Cards Card { get; set; }
+        public Card Card { get; set; }
     }
 }

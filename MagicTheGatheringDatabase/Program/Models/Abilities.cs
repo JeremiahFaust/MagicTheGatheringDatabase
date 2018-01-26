@@ -12,7 +12,7 @@ namespace MagicDbContext.Models
 
         public String Ability { get; set; }
 
-        public ICollection<CardAbilities> CardAbilities { get; set; }
+        public string Description { get; set; }
 
     }
 }

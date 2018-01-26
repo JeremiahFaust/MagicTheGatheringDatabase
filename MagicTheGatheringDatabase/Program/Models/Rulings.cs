@@ -8,13 +8,12 @@ namespace MagicDbContext.Models
 {
     public class Rulings
     {
-        [Key]
-        public int RulingsID { get; set; }
-
         public String Ruling { get; set; }
+
+        public DateTime Date { get; set; }
 
         [ForeignKey("Cards")]
         public int CardID { get; set; }
-        public Cards Cards { get; set; }
+        public Card Cards { get; set; }
     }
 }

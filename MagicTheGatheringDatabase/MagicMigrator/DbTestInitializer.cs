@@ -21,9 +21,32 @@ namespace MagicMigrator
             dbContextOptions.UseSqlite("Data Source=MagicDB.db", providerOptions => providerOptions.CommandTimeout(60));
 
             ctxt = new MagicContext(dbContextOptions.Options);
-            ctxt.Database.EnsureDeleted();
-            ctxt.Database.EnsureCreated();
-            ini();
+
+
+            var car = ctxt.Cards
+                .Include(c => c.CardTypes)
+                    .ThenInclude(ct => ct.Type)
+                .Include(c => c.Set)
+                .Include(c => c.ManaCosts)
+                    .ThenInclude(mc => mc.Color);
+            foreach (Card c in car)
+            {
+                Console.WriteLine(c.CardName);
+                //var s = c.Set.SetFullName;
+                //ctxt.Entry(c).Collection(p => p.CardTypes).Load();
+                foreach (CardTypes ty in c.CardTypes)
+                {
+                    //ctxt.Entry(ty).Reference(t => t.Type).Load();
+                    Console.WriteLine(ty.Type.Name);
+                }
+            }
+            Console.ReadLine();
+
+
+            //ctxt.Database.EnsureDeleted();
+            //ctxt.Database.EnsureCreated();
+            //ini();
+
         }
 
         private void ini()
@@ -33,42 +56,58 @@ namespace MagicMigrator
                 return;
             }
 
-            var Sets = new Sets[]
-            {
-                new Sets{ SetID= 1, SetAbbr="AER", SetFullName="Aether Revolt"},
-            };
+            var _colors = SeedColors();
+            Color FindColor(string name) => _colors.Where(f => f.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
-            ctxt.Sets.AddRange(Sets);
-            ctxt.SaveChanges(true);
+            var _types = SeedTypes();
+            Types FindType(string name) => _types.Where(f => f.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
-            var types = new Types[]
-            {
-                new Types{ TypeID=1, TypeName="Artifact Creature" },
-                new Types{ TypeID=2, TypeName="Construct"}
-            };
+
+            var _sets = SeedSets();
+            Sets FindSets(string name) => _sets.Where(f => f.SetAbbr.Equals(name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+
+            var _abilities = SeedAbilities();
+            Abilities FindAbility(string ability) => _abilities.Where(a => a.Ability.Equals(ability, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+
+
             
-            ctxt.Types.AddRange(types);
-            ctxt.SaveChanges(true);
 
-            var abilities = new Abilities[]
+            //var Sets = new Sets[]
+            //{
+            //    new Sets{ SetAbbr="AER", SetFullName="Aether Revolt"},
+            //};
+
+            //ctxt.Sets.AddRange(Sets);
+            //ctxt.SaveChanges(true);
+
+            //var types = new Types[]
+            //{
+            //    new Types{ ID=1, Name="Artifact Creature" },
+            //    new Types{ ID=2, Name="Construct"}
+            //};
+            
+            //ctxt.Types.AddRange(types);
+            //ctxt.SaveChanges(true);
+
+            //var abilities = new Abilities[]
+            //{
+            //    new Abilities{ AbilityID =1, Ability="{4}{W}: Return another target creature you control to its owner's hand."}
+            //};
+
+            //ctxt.Abilities.AddRange(abilities);
+            //ctxt.SaveChanges(true);
+
+            //var colors = new Color[]
+            //{
+            //    new Color{ Name="Colorless" }
+            //};
+
+            //ctxt.Color.AddRange(colors);
+            //ctxt.SaveChanges(true);
+
+            var Cards = new Card[]
             {
-                new Abilities{ AbilityID =1, Ability="{4}{W}: Return another target creature you control to its owner's hand."}
-            };
-
-            ctxt.Abilities.AddRange(abilities);
-            ctxt.SaveChanges(true);
-
-            var colors = new Color[]
-            {
-                new Color{ ColorID=1, ColorName="Two Colorless", ColorSymbol='2', ColorValue=2 }
-            };
-
-            ctxt.Color.AddRange(colors);
-            ctxt.SaveChanges(true);
-
-            var Cards = new Cards[]
-            {
-                new Cards { MultiverseID=423808, Artist="Kieran Yanner", CardName="Aegis Automaton", FlavorText="#_The streets of Ghirapur have become dangerous. It's good to have a dependable companion._#", HighPrice=0.95, LowPrice=0.01, MidPrice=0.1, Power= 0, Toughness=3, Rarity="C", Rating=5, SetID=1}
+                new Card { MultiverseID=423808, Artist="Kieran Yanner", CardName="Aegis Automaton", FlavorText="#_The streets of Ghirapur have become dangerous. It's good to have a dependable companion._#", HighPrice=0.95, LowPrice=0.01, MidPrice=0.1, Power= 0, Toughness=3, Rarity="C", Rating=5, SetID=FindSets("AER").SetAbbr}
             };
 
             ctxt.Cards.AddRange(Cards);
@@ -76,8 +115,9 @@ namespace MagicMigrator
             
             var CardTypes = new CardTypes[]
             {
-                new MagicDbContext.Models.CardTypes{ CardTypeID=1, TypeID=1, CardID=423808 },
-                new CardTypes { CardTypeID=2, TypeID=2, CardID=423808 }
+                new MagicDbContext.Models.CardTypes{ TypeID=FindType("Artifact").ID, CardID=423808 },
+                new CardTypes { TypeID=FindType("Creature").ID, CardID=423808 },
+                new CardTypes { TypeID=FindType("Construct").ID, CardID=423808 }
             };
 
             ctxt.CardTypes.AddRange(CardTypes);
@@ -85,7 +125,7 @@ namespace MagicMigrator
 
             var Rulings = new Rulings[]
             {
-                new Rulings{ CardID=423808, RulingsID=1, Ruling=""}
+                new Rulings{ CardID=423808, Ruling=""}
             };
 
             ctxt.Rulings.AddRange(Rulings);
@@ -93,7 +133,7 @@ namespace MagicMigrator
 
             var cardAbilities = new CardAbilities[]
             {
-                new CardAbilities{ CardAbilitiesID=1, AbilityID=1, CardID=423808}
+                new CardAbilities{ AbilityID=FindAbility("{4}{W}: Return another target creature you control to its owner's hand.").AbilityID, CardID=423808}
             };
 
             ctxt.CardAbilities.AddRange(cardAbilities);
@@ -101,7 +141,7 @@ namespace MagicMigrator
 
             var manaCosts = new ManaCosts[]
             {
-                new ManaCosts { ManaCostID=1, ColorID=1, CardID=423808 }
+                new ManaCosts { Quantity=2, ColorID=FindColor("Colorless").ID, CardID=423808 }
             };
 
             ctxt.ManaCosts.AddRange(manaCosts);
@@ -113,5 +153,49 @@ namespace MagicMigrator
             ctxt.SaveChanges(true);
         }
 
+        private IEnumerable<Abilities> SeedAbilities()
+        {
+            HashSet<string> types = new HashSet<string>();
+            types.Add("{4}{W}: Return another target creature you control to its owner's hand.");
+            types.Add("Flying");
+            ctxt.Abilities.AddRange(types.Select(f => new Abilities { Ability = f }));
+            ctxt.SaveChanges();
+            return ctxt.Abilities.ToArray();
+        }
+
+        private IEnumerable<Sets> SeedSets()
+        {
+            ctxt.Sets.AddRange(
+            new Sets { SetAbbr = "AER", SetFullName= "Aether Revolt" }
+            );
+            ctxt.SaveChanges();
+            return ctxt.Sets.ToArray();
+        }
+
+        private IEnumerable<Types> SeedTypes()
+        {
+            ctxt.Types.AddRange(
+            new Types { Name = "Artifact" },
+            new Types { Name = "Creature" },
+            new Types { Name = "Construct" }
+            );
+            ctxt.SaveChanges();
+            return ctxt.Types.ToArray();
+
+            //HashSet<string> types = new HashSet<string>();
+
+            //ctxt.AddRange(types.Select(s => new Types { Name = s }));
+        }
+
+        private IEnumerable<Color> SeedColors()
+        {
+            ctxt.Color.AddRange(
+                new Color { Name = "White" } ,
+                new Color { Name = "Black" },
+                new Color{ Name="Colorless" }
+                );
+            ctxt.SaveChanges();
+            return ctxt.Color.ToArray();
+        }
     }
 }

@@ -8,13 +8,12 @@ namespace MagicDbContext.Models
     public class Sets
     {
         [Key]
-        public int SetID { get; set; }
-
+        [MaxLength(10)]
         public String SetAbbr { get; set; }
 
         public string SetFullName { get; set; }
 
-        public ICollection<Cards> Cards { get; set; }
+        public ICollection<Card> Cards { get; set; }
 
     }
 }
