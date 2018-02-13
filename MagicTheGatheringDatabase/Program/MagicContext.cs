@@ -8,7 +8,7 @@ namespace MagicDbContext
 {
     public class MagicContext : DbContext
     {
-
+        public DbSet<MultiverseCard> MultiverseCards { get; set; }
         public DbSet<Card> Cards { get; set; }
         public DbSet<Sets> Sets { get; set; }
         public DbSet<Types> Types { get; set; }
@@ -27,14 +27,27 @@ namespace MagicDbContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ManaCosts>()
-                .HasKey(cc => new { cc.CardID, cc.ColorID });
-            modelBuilder.Entity<CardAbilities>()
-                .HasKey(cc => new { cc.CardID, cc.AbilityID });
-            modelBuilder.Entity<CardTypes>()
-                .HasKey(cc => new { cc.CardID, cc.TypeID });
-            modelBuilder.Entity<Rulings>()
-                .HasKey(cc => new { cc.CardID, cc.Ruling });
+                .HasKey(cc => new { cc.CardID, cc.CardNumber, cc.ColorID });
+            modelBuilder.Entity<ManaCosts>().HasOne(cc => cc.Cards).WithMany(c => c.ManaCosts);
 
+            modelBuilder.Entity<CardAbilities>()
+                .HasKey(cc => new { cc.CardID, cc.CardNumber, cc.AbilityID });
+            modelBuilder.Entity<CardAbilities>().HasOne(cc => cc.Card).WithMany(c => c.CardAbilities);
+
+            modelBuilder.Entity<CardTypes>()
+                .HasKey(cc => new { cc.CardID, cc.CardNumber, cc.TypeID });
+            modelBuilder.Entity<CardTypes>().HasOne(cc => cc.Card).WithMany(c => c.CardTypes);
+
+            modelBuilder.Entity<Rulings>()
+                .HasKey(cc => new { cc.CardID, cc.CardNumber, cc.Ruling });
+            modelBuilder.Entity<Rulings>().HasOne(cc => cc.Cards).WithMany(c => c.Rulings);
+
+            modelBuilder.Entity<MultiverseCard>().HasMany(cc => cc.cards).WithOne(c => c.MultiverseCard);
+
+            modelBuilder.Entity<Card>()
+                .HasKey(cc => new { cc.MultiverseID, cc.CardNumber });
+
+            modelBuilder.Entity<MultiverseCard>().ToTable("MultiverseCards");
             modelBuilder.Entity<Card>().ToTable("Cards");
             modelBuilder.Entity<Sets>().ToTable("Sets");
             modelBuilder.Entity<Types>().ToTable("Types");

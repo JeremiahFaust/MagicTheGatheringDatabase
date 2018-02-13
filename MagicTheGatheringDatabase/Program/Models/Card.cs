@@ -11,17 +11,21 @@ namespace MagicDbContext.Models
     [Table("Cards")]
     public class Card
     {
-        [Key]
         public string MultiverseID { get; set; }
+
+        public MultiverseCard MultiverseCard { get; set; }
+
+        public string CardNumber { get; set; }
 
         [Required]
         public String CardName { get; set; }
 
+        /*
         [MaxLength(10)]
         public string SetID { get; set; }
         [ForeignKey("SetID")]
         public Sets Set { get; set; }
-        
+        */
 
         public String Rarity { get; set; }
 
@@ -46,11 +50,12 @@ namespace MagicDbContext.Models
         public double MidPrice { get; set; }
         public double HighPrice { get; set; }
 
-        public String ImagePath { get; set; }
+        //public String ImagePath { get; set; }
+        public bool IsDualCard { get; set; }
 
         public override string ToString()
         {
-            return MultiverseID + ": " + CardName;
+            return MultiverseID + " " + CardNumber + ": " + CardName;
         }
     }
 }

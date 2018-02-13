@@ -26,7 +26,7 @@ namespace MagicMigrator
             var car = ctxt.Cards
                 .Include(c => c.CardTypes)
                     .ThenInclude(ct => ct.Type)
-                .Include(c => c.Set)
+                .Include(c => c.CardTypes)
                 .Include(c => c.ManaCosts)
                     .ThenInclude(mc => mc.Color);
             foreach (Card c in car)
@@ -70,7 +70,7 @@ namespace MagicMigrator
             Abilities FindAbility(string ability) => _abilities.Where(a => a.Ability.Equals(ability, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
 
-            
+
 
             //var Sets = new Sets[]
             //{
@@ -85,7 +85,7 @@ namespace MagicMigrator
             //    new Types{ ID=1, Name="Artifact Creature" },
             //    new Types{ ID=2, Name="Construct"}
             //};
-            
+
             //ctxt.Types.AddRange(types);
             //ctxt.SaveChanges(true);
 
@@ -104,10 +104,11 @@ namespace MagicMigrator
 
             //ctxt.Color.AddRange(colors);
             //ctxt.SaveChanges(true);
+            
 
             var Cards = new Card[]
             {
-                new Card { MultiverseID="423808", Artist="Kieran Yanner", CardName="Aegis Automaton", FlavorText="#_The streets of Ghirapur have become dangerous. It's good to have a dependable companion._#", HighPrice=0.95, LowPrice=0.01, MidPrice=0.1, Power= 0, Toughness=3, Rarity="C", Rating=5, SetID=FindSets("AER").SetAbbr}
+                new Card { MultiverseID="423808", Artist="Kieran Yanner", CardName="Aegis Automaton", FlavorText="#_The streets of Ghirapur have become dangerous. It's good to have a dependable companion._#", HighPrice=0.95, LowPrice=0.01, MidPrice=0.1, Power= 0, Toughness=3, Rarity="C", Rating=5}
             };
 
             ctxt.Cards.AddRange(Cards);

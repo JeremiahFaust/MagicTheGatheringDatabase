@@ -11,9 +11,9 @@ namespace MagicDbContext.Models
         [ForeignKey("Type")]
         public int TypeID { get; set; }
         public Types Type { get; set; }
-
-        [ForeignKey("Card")]
+        
         public string CardID { get; set; }
+        public string CardNumber { get; set; }
         public Card Card { get; set; }
     }
 }

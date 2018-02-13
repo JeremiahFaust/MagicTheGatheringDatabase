@@ -27,24 +27,32 @@ namespace MagicMigrator
         Sets FindSets(string name) => _sets.Where(f => f.SetAbbr.Equals(name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
         Abilities FindAbility(string ability) => _abilities.Where(a => a.Ability.Equals(ability, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+
+
+        private char[] alphabet = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p' };
+
         
+
+
         public DbInitializer(MagicContext context)
         {
             this.ctxt = context;
             ctxt.Database.EnsureDeleted();
             ctxt.Database.EnsureCreated();
 
-            GetExcelPackage();
+            BeginMigration();
             
         }
 
-        public ExcelPackage GetExcelPackage()
+
+
+        public void BeginMigration()
         {
             FileInfo file = new FileInfo("MTGDatabase.xlsx");
-            return GetExcelPackage(file);
+            BeginMigration(file);
         }
 
-        public ExcelPackage GetExcelPackage(FileInfo fileInfo)
+        public void BeginMigration(FileInfo fileInfo)
         {
             Console.WriteLine("StartTime: " + DateTime.Now);
 
@@ -54,13 +62,13 @@ namespace MagicMigrator
             using (ExcelPackage pkg = new ExcelPackage(fileInfo))
             {
                 ExcelWorksheet wksht = pkg.Workbook.Worksheets[1];
+                //ExcelWorksheet wksht = pkg.Workbook.Worksheets[2];
                 int rows = wksht.Dimension.Rows;
 
                 if (!ctxt.Sets.Any()) IniSetsColorsTypesAbilities(wksht, rows);
-                if(!ctxt.Cards.Any())IniCards(wksht, rows);
+                if(!ctxt.Cards.Any()) IniCards(wksht, rows);
 
             }
-            return null;
         }
 
         private void IniSetsColorsTypesAbilities(ExcelWorksheet wksht, int rows)
@@ -69,7 +77,7 @@ namespace MagicMigrator
             HashSet<string> colors = new HashSet<string>();
             HashSet<string> types = new HashSet<string>();
 
-            for (int row = 2; row < rows; row++)
+            for (int row = 2; row < rows+1; row++)
             {
                 getAbilities(abilities, row, wksht);
                 getColorlessMana(colors, row, wksht);
@@ -83,42 +91,33 @@ namespace MagicMigrator
 
         private void IniCards(ExcelWorksheet wksht, int rows)
         {
-            List<Card> cards = new List<Card>();
-            List <CardTypes> cardTypes = new List<CardTypes>();
-            List<Rulings> rulings = new List<Rulings>();
-            List<CardAbilities> cardAbilities = new List<CardAbilities>();
-            List<ManaCosts> manaCosts = new List<ManaCosts>();
+            //List<MultiverseCard> mcards = new List<MultiverseCard>();
+            //List<Card> cards = new List<Card>();
+            //List<CardTypes> cardTypes = new List<CardTypes>();
+            //List<Rulings> rulings = new List<Rulings>();
+            //List<CardAbilities> cardAbilities = new List<CardAbilities>();
+            //List<ManaCosts> manaCosts = new List<ManaCosts>();
 
-            for (int row = 2; row<rows; row++)
+            for (int row = 2; row<rows+1; row++)
             {
                 string set = wksht.Cells[row, 3].Text;
                 string multiverseID = wksht.Cells[row, 1].Text;
+                
                 string imgRelPath = set + "\\" + multiverseID + ".full.jpg";
-                string artist = wksht.Cells[row, 14].Text;
-                string cardname = wksht.Cells[row, 2].Text;
-                string flabortext = wksht.Cells[row, 12].Text;
-                double highprice = wksht.Cells[row, 22].Text.AsOrDefault<Double>();
-                double lowprice = wksht.Cells[row, 20].Text.AsOrDefault<Double>();
-                double midprice = wksht.Cells[row, 21].Text.AsOrDefault<Double>();
-                int power = wksht.Cells[row, 8].Text.AsOrDefault<Int32>();
-                int toughness = wksht.Cells[row, 9].Text.AsOrDefault<Int32>();
-                string rarity = wksht.Cells[row, 5].Text;
-                int rating = wksht.Cells[row, 16].Text.AsOrDefault<Int32>();
-                int convertedmanacost = wksht.Cells[row, 7].Text.AsOrDefault<Int32>();
 
-                Card c = new Card { MultiverseID = multiverseID, Artist = artist, CardName = cardname, FlavorText = wksht.Cells[row, 12].Text, HighPrice = highprice, LowPrice = lowprice, MidPrice = midprice, Power = power, Toughness = toughness, Rarity = rarity, Rating = rating, ConvertedManaCost = convertedmanacost, ImagePath = imgRelPath, SetID = FindSets(set).SetAbbr };
+                MultiverseCard mc = new MultiverseCard { ImagePath = imgRelPath, MultiverseId = multiverseID, SetID = FindSets(set).SetAbbr };
 
-                cards.Add(c);
+                ctxt.MultiverseCards.Add(mc);
 
-                iniCardSubAttributes(wksht, cardTypes, rulings, cardAbilities, manaCosts, row, multiverseID);
-                Console.WriteLine(c + " | " + FindSets(set));
+                ctxt.Cards.AddRange(ReadCard(wksht, row, multiverseID));
             }
-
-            ctxt.AddRange(cards);
-            ctxt.AddRange(cardTypes);
-            ctxt.AddRange(rulings);
-            ctxt.AddRange(cardAbilities);
-            ctxt.AddRange(manaCosts);
+            
+            //ctxt.AddRange(mcards);
+            //ctxt.AddRange(cards);
+            //ctxt.AddRange(cardTypes);
+            //ctxt.AddRange(rulings);
+            //ctxt.AddRange(cardAbilities);
+            //ctxt.AddRange(manaCosts);
             ctxt.SaveChanges();
 
             Console.WriteLine("CompletionTime: " + DateTime.Now);
@@ -126,24 +125,142 @@ namespace MagicMigrator
 
         }
 
-        private void iniCardSubAttributes(ExcelWorksheet wksht, List<CardTypes> cardTypes, List<Rulings> rulings, List<CardAbilities> cardAbilities, List<ManaCosts> manaCosts, int row, string multiverseID)
+        private IEnumerable<Card> ReadCard(ExcelWorksheet wksht, int row, string multiverseID)
+        {
+            string cardname = wksht.Cells[row, 2].Text;
+
+            string[] cnames = cardname.Split("//");
+            
+            if(cnames.Length==1)
+            {
+                return getCard(wksht, row, multiverseID);
+            }
+            else
+            {
+                return getDualCard(wksht, row, multiverseID, cnames);
+            }
+            
+        }
+
+        private IEnumerable<Card> getDualCard(ExcelWorksheet wksht, int row, string multiverseID, string[] cnames)
+        {
+            List<Card> cards = new List<Card>();
+
+            string cardnumber = wksht.Cells[row, 15].Text;
+            string artist = wksht.Cells[row, 14].Text.Split("//")[0].Trim();
+            string[] flavortext = wksht.Cells[row, 12].Text.Split("//");
+            double highprice = wksht.Cells[row, 22].Text.AsOrDefault<Double>();
+            double lowprice = wksht.Cells[row, 20].Text.AsOrDefault<Double>();
+            double midprice = wksht.Cells[row, 21].Text.AsOrDefault<Double>();
+            string[] power = wksht.Cells[row, 8].Text.Split("//");
+            string[] toughness = wksht.Cells[row, 9].Text.Split("//");
+            string rarity = wksht.Cells[row, 5].Text.Split("//")[0].Trim();
+            int rating = wksht.Cells[row, 16].Text.AsOrDefault<Int32>();
+            string[] convertedmanacost = wksht.Cells[row, 7].Text.Split("//");
+
+            for (int i = 0; i<cnames.Length; i++)
+            {
+                Card c = new Card { MultiverseID = multiverseID, CardNumber = cardnumber + alphabet[i], Artist = artist, CardName = (cnames.Length>i)?cnames[i].Trim():"", FlavorText = (flavortext.Length>i)?flavortext[i].Trim():"", HighPrice = highprice, LowPrice = lowprice, MidPrice = midprice, Power = (power.Length>i)?power[i].Trim().AsOrDefault<int>():0, Toughness = (toughness.Length>i)?toughness[i].Trim().AsOrDefault<int>():0, Rarity = rarity, Rating = rating, ConvertedManaCost = (convertedmanacost.Length>i)?convertedmanacost[i].Trim().AsOrDefault<int>():0, IsDualCard = true };
+
+                cards.Add(c);
+                iniCardSubAttributesDual(wksht, row, multiverseID, cardnumber + alphabet[i], i);
+                Console.WriteLine(cnames[i]);
+
+            }
+
+            return cards;
+        }
+
+        private IEnumerable<Card> getCard(ExcelWorksheet wksht, int row, string multiverseID)
+        {
+            List<Card> cards = new List<Card>();
+            
+            string cardnumber = wksht.Cells[row, 15].Text;
+            string artist = wksht.Cells[row, 14].Text;
+            string cardname = wksht.Cells[row, 2].Text;
+            string flabortext = wksht.Cells[row, 12].Text;
+            double highprice = wksht.Cells[row, 22].Text.AsOrDefault<Double>();
+            double lowprice = wksht.Cells[row, 20].Text.AsOrDefault<Double>();
+            double midprice = wksht.Cells[row, 21].Text.AsOrDefault<Double>();
+            int power = wksht.Cells[row, 8].Text.AsOrDefault<Int32>();
+            int toughness = wksht.Cells[row, 9].Text.AsOrDefault<Int32>();
+            string rarity = wksht.Cells[row, 5].Text;
+            int rating = wksht.Cells[row, 16].Text.AsOrDefault<Int32>();
+            int convertedmanacost = wksht.Cells[row, 7].Text.AsOrDefault<Int32>();
+            bool isDual = false;
+
+            Card c = new Card { MultiverseID = multiverseID, CardNumber = cardnumber, Artist = artist, CardName = cardname, FlavorText = wksht.Cells[row, 12].Text, HighPrice = highprice, LowPrice = lowprice, MidPrice = midprice, Power = power, Toughness = toughness, Rarity = rarity, Rating = rating, ConvertedManaCost = convertedmanacost, IsDualCard = isDual };
+
+            cards.Add(c);
+
+            iniCardSubAttributes(wksht, row, multiverseID, cardnumber);
+
+
+            Console.WriteLine(cardname);
+            return cards;
+        }
+        
+        private void iniCardSubAttributesDual(ExcelWorksheet wksht, int row, string multiverseID, string cardNumber, int i)
         {
             HashSet<string> types = new HashSet<string>();
-            getTypes(types, row, wksht);
+            string[] unsplit = wksht.Cells[row, 4].Text.Split("//");
+            string tmp = (unsplit.Length > i) ? unsplit[i] : "";
+            tmp = tmp.Trim();
+            getTypesDual(types, tmp);
 
-            cardTypes.AddRange(types.Select(t => new MagicDbContext.Models.CardTypes { TypeID = FindType(t).ID, CardID = multiverseID }));
+
+            ctxt.CardTypes.AddRange(types.Select(t => new MagicDbContext.Models.CardTypes { TypeID = FindType(t).ID, CardID = multiverseID, CardNumber=cardNumber }));
 
             HashSet<string> ruling = new HashSet<string>();
             getRulings(ruling, row, wksht);
 
-            rulings.AddRange(ruling.Select(r => new MagicDbContext.Models.Rulings { CardID = multiverseID, Ruling = getRuling(r), Date = getRulingDate(r) }));
+            ctxt.Rulings.AddRange(ruling.Select(r => new MagicDbContext.Models.Rulings { CardID = multiverseID, Ruling = getRuling(r), Date = getRulingDate(r), CardNumber = cardNumber }));
+
+            HashSet<string> ab = new HashSet<string>();
+            string[] abilities = wksht.Cells[row, 11].Text.Split("//");
+            tmp = (abilities.Length > i) ? abilities[i] : "";
+            tmp = tmp.Trim();
+            getAbilitiesDual(ab, tmp);
+
+            ctxt.CardAbilities.AddRange(ab.Select(a => new CardAbilities { AbilityID = FindAbility(a).AbilityID, CardID = multiverseID, CardNumber =  cardNumber}));
+
+            string[] mana = wksht.Cells[row, 6].Text.Split("//");
+            tmp = (mana.Length > i) ? mana[i] : "";
+            tmp = tmp.Trim();
+            getManaCostDual(row, tmp, multiverseID, cardNumber);
+        }
+
+        private void iniCardSubAttributes(ExcelWorksheet wksht, int row, string multiverseID, string cardNumber)
+        {
+            HashSet<string> types = new HashSet<string>();
+            getTypes(types, row, wksht);
+            
+
+            //ctxt.CardTypes.AddRange(types.Select(t => new MagicDbContext.Models.CardTypes { TypeID = FindType(t).ID, CardID = multiverseID, CardNumber=cardNumber }));
+
+            HashSet<string> ruling = new HashSet<string>();
+            getRulings(ruling, row, wksht);
+
+            ctxt.Rulings.AddRange(ruling.Select(r => new MagicDbContext.Models.Rulings { CardID = multiverseID, Ruling = getRuling(r), Date = getRulingDate(r), CardNumber =cardNumber }));
 
             HashSet<string> ab = new HashSet<string>();
             getAbilities(ab, row, wksht);
 
-            cardAbilities.AddRange(ab.Select(a => new CardAbilities { AbilityID = FindAbility(a).AbilityID, CardID = multiverseID }));
+            ctxt.CardAbilities.AddRange(ab.Select(a => new CardAbilities { AbilityID = FindAbility(a).AbilityID, CardID = multiverseID, CardNumber = cardNumber }));
 
-            getManaCost(manaCosts, row, wksht, multiverseID);
+            getManaCost(row, wksht, multiverseID, cardNumber);
+        }
+
+        private void getTypesDual(HashSet<string> types, string creatureTypes)
+        {
+            string[] typesarr = creatureTypes.Split(' ');
+
+            foreach (string s in typesarr)
+            {
+                if (String.IsNullOrEmpty(s)) continue;
+                if (s.Equals("—")) continue;
+                types.Add(s);
+            }
         }
 
         private void getTypes(HashSet<string> types, int row, ExcelWorksheet wksht)
@@ -174,6 +291,17 @@ namespace MagicMigrator
             }
         }
 
+        private void getAbilitiesDual(HashSet<string> abilities, string abi)
+        {
+            string[] abili = abi.Split('£');
+
+            foreach (string s in abili)
+            {
+                if (String.IsNullOrEmpty(s) || String.IsNullOrWhiteSpace(s)) continue;
+                abilities.Add(s);
+            }
+        }
+
         private void getAbilities(HashSet<string> abilities, int row, ExcelWorksheet wksht)
         {
             string abi = wksht.Cells[row, 11].Text;
@@ -182,13 +310,17 @@ namespace MagicMigrator
 
             foreach(string s in abili)
             {
+                if (String.IsNullOrEmpty(s) || String.IsNullOrWhiteSpace(s)) continue;
                 abilities.Add(s);
             }
         }
-        
-        private void getManaCost(List<ManaCosts> manaCosts, int row, ExcelWorksheet wksht, string multiverseID)
+
+        private void getManaCostDual(int row, string col, string multiverseID, string cardNumber)
         {
-            string col = wksht.Cells[row, 6].Text;
+            //if (multiverseID.Equals("426917"))
+            //{
+            //    Console.WriteLine("break");
+            //}
 
             int white = 0;
             int black = 0;
@@ -198,6 +330,7 @@ namespace MagicMigrator
             int red = 0;
 
             string[] color = col.Split('{', '}');
+            List<ManaCosts> manaCosts = new List<ManaCosts>();
 
             foreach (string s in color)
             {
@@ -205,7 +338,9 @@ namespace MagicMigrator
                 if (String.IsNullOrEmpty(s)) continue;
                 if (Int32.TryParse(s, out i))
                 {
-                    manaCosts.Add(new ManaCosts { CardID = multiverseID, ColorID = FindColor("Uncolored", s).ID, Quantity = i });
+                    ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Uncolored", s).ID, Quantity = i, CardNumber = cardNumber };
+                    if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
+                    continue;
                 }
                 if (s.Equals("W", StringComparison.OrdinalIgnoreCase)) { white++; continue; }
                 if (s.Equals("B", StringComparison.OrdinalIgnoreCase)) { black++; continue; }
@@ -216,40 +351,115 @@ namespace MagicMigrator
             }
             if (white > 0)
             {
-                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("White", "W").ID, Quantity = white };
-                if (!manaCosts.Contains(mc)) manaCosts.Add(mc);
+                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("White", "W").ID, Quantity = white, CardNumber = cardNumber };
+                if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
+            }
+            if (black > 0)
+            {
+                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Black", "B").ID, Quantity = black, CardNumber = cardNumber };
+                if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
+            }
+
+            if (green > 0)
+            {
+                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Green", "G").ID, Quantity = green, CardNumber = cardNumber };
+                if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
+            }
+
+            if (blue > 0)
+            {
+                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Blue", "U").ID, Quantity = blue, CardNumber = cardNumber };
+                if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
+            }
+
+            if (colorless > 0)
+            {
+                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("X", "X").ID, Quantity = colorless, CardNumber = cardNumber };
+                if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
+            }
+
+            if (red > 0)
+            {
+                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Red", "R").ID, Quantity = red, CardNumber = cardNumber };
+                if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
+            }
+
+        }
+
+
+        private void getManaCost(int row, ExcelWorksheet wksht, string multiverseID, string cardNumber)
+        {
+            //if (multiverseID.Equals("426917"))
+            //{
+            //    Console.WriteLine("break");
+            //}
+            string col = wksht.Cells[row, 6].Text;
+
+            int white = 0;
+            int black = 0;
+            int green = 0;
+            int blue = 0;
+            int colorless = 0;
+            int red = 0;
+
+            string[] color = col.Split('{', '}');
+            List<ManaCosts> manaCosts = new List<ManaCosts>();
+
+            foreach (string s in color)
+            {
+                int i = 0;
+                if (String.IsNullOrEmpty(s)) continue;
+                if (Int32.TryParse(s, out i))
+                {
+                    ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Uncolored", s).ID, Quantity = i, CardNumber = cardNumber };
+                    if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
+                    continue;
+                }
+                if (s.Equals("W", StringComparison.OrdinalIgnoreCase)) { white++; continue; }
+                if (s.Equals("B", StringComparison.OrdinalIgnoreCase)) { black++; continue; }
+                if (s.Equals("U", StringComparison.OrdinalIgnoreCase)) { blue++; continue; }
+                if (s.Equals("G", StringComparison.OrdinalIgnoreCase)) { green++; continue; }
+                if (s.Equals("R", StringComparison.OrdinalIgnoreCase)) { red++; continue; }
+                if (s.Equals("X", StringComparison.OrdinalIgnoreCase)) { colorless++; continue; }
+            }
+            if (white > 0)
+            {
+                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("White", "W").ID, Quantity = white, CardNumber = cardNumber };
+                if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
             } 
             if (black > 0)
             {
-                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Black", "B").ID, Quantity = black };
-                if (!manaCosts.Contains(mc)) manaCosts.Add(mc);
+                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Black", "B").ID, Quantity = black, CardNumber = cardNumber };
+                if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
             }
             
             if (green > 0)
             {
-                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Green", "G").ID, Quantity = green };
-                if (!manaCosts.Contains(mc)) manaCosts.Add(mc);
+                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Green", "G").ID, Quantity = green, CardNumber = cardNumber };
+                if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
             }
             
             if (blue > 0)
             {
-                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Blue", "U").ID, Quantity = blue };
-                if (!manaCosts.Contains(mc)) manaCosts.Add(mc);
+                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Blue", "U").ID, Quantity = blue, CardNumber = cardNumber };
+                if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
             }
             
             if (colorless > 0)
             {
-                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("X", "X").ID, Quantity = colorless };
-                if (!manaCosts.Contains(mc)) manaCosts.Add(mc);
+                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("X", "X").ID, Quantity = colorless, CardNumber = cardNumber };
+                if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
             }
            
             if (red > 0)
             {
-                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Red", "R").ID, Quantity = red };
-                if (!manaCosts.Contains(mc)) manaCosts.Add(mc);
+                ManaCosts mc = new ManaCosts { CardID = multiverseID, ColorID = FindColor("Red", "R").ID, Quantity = red, CardNumber = cardNumber };
+                if (!manaCosts.Contains(mc)) ctxt.ManaCosts.Add(mc);
             }
             
         }
+
+
 
         private DateTime getRulingDate(string r)
         {

@@ -12,8 +12,10 @@ namespace MagicDbContext.Models
         public int AbilityID { get; set; }
         public Abilities Ability { get; set; }
 
-        [ForeignKey("Card")]
+        
         public string CardID { get; set; }
+        public string CardNumber { get; set; }
+
         public Card Card { get; set; }
     }
 }

@@ -11,9 +11,9 @@ namespace MagicDbContext.Models
         public String Ruling { get; set; }
 
         public DateTime Date { get; set; }
-
-        [ForeignKey("Cards")]
+        
         public string CardID { get; set; }
+        public string CardNumber { get; set; }
         public Card Cards { get; set; }
     }
 }
