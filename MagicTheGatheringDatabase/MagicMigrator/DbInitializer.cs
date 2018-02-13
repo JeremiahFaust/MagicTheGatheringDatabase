@@ -236,7 +236,7 @@ namespace MagicMigrator
             getTypes(types, row, wksht);
             
 
-            //ctxt.CardTypes.AddRange(types.Select(t => new MagicDbContext.Models.CardTypes { TypeID = FindType(t).ID, CardID = multiverseID, CardNumber=cardNumber }));
+            ctxt.CardTypes.AddRange(types.Select(t => new MagicDbContext.Models.CardTypes { TypeID = FindType(t).ID, CardID = multiverseID, CardNumber=cardNumber }));
 
             HashSet<string> ruling = new HashSet<string>();
             getRulings(ruling, row, wksht);
