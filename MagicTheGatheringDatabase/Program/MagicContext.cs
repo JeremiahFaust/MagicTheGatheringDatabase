@@ -28,21 +28,21 @@ namespace MagicDbContext
         {
             modelBuilder.Entity<ManaCosts>()
                 .HasKey(cc => new { cc.CardID, cc.CardNumber, cc.ColorID });
-            modelBuilder.Entity<ManaCosts>().HasOne(cc => cc.Cards).WithMany(c => c.ManaCosts);
+            modelBuilder.Entity<ManaCosts>().HasOne(cc => cc.Cards).WithMany(c => c.ManaCosts).HasForeignKey(fk=> new { fk.CardID, fk.CardNumber });
 
             modelBuilder.Entity<CardAbilities>()
                 .HasKey(cc => new { cc.CardID, cc.CardNumber, cc.AbilityID });
-            modelBuilder.Entity<CardAbilities>().HasOne(cc => cc.Card).WithMany(c => c.CardAbilities);
+            modelBuilder.Entity<CardAbilities>().HasOne(cc => cc.Card).WithMany(c => c.CardAbilities).HasForeignKey(fk =>new { fk.CardID, fk.CardNumber });
 
             modelBuilder.Entity<CardTypes>()
                 .HasKey(cc => new { cc.CardID, cc.CardNumber, cc.TypeID });
-            modelBuilder.Entity<CardTypes>().HasOne(cc => cc.Card).WithMany(c => c.CardTypes);
+            modelBuilder.Entity<CardTypes>().HasOne(cc => cc.Card).WithMany(c => c.CardTypes).HasForeignKey(fk=> new { fk.CardID, fk.CardNumber });
 
             modelBuilder.Entity<Rulings>()
                 .HasKey(cc => new { cc.CardID, cc.CardNumber, cc.Ruling });
-            modelBuilder.Entity<Rulings>().HasOne(cc => cc.Cards).WithMany(c => c.Rulings);
+            modelBuilder.Entity<Rulings>().HasOne(cc => cc.Cards).WithMany(c => c.Rulings).HasForeignKey(fk => new { fk.CardID, fk.CardNumber });
 
-            modelBuilder.Entity<MultiverseCard>().HasMany(cc => cc.cards).WithOne(c => c.MultiverseCard);
+            modelBuilder.Entity<MultiverseCard>().HasMany(cc => cc.cards).WithOne(c => c.MultiverseCard).HasForeignKey(fk => fk.MultiverseID);
 
             modelBuilder.Entity<Card>()
                 .HasKey(cc => new { cc.MultiverseID, cc.CardNumber });
