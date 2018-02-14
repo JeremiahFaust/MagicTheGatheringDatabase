@@ -17,5 +17,16 @@ namespace MagicDbContext.Models
         public string CardNumber { get; set; }
 
         public Card Card { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (!obj.GetType().Equals(this.GetType())) return false;
+            CardAbilities ca = (CardAbilities)obj;
+
+            if (ca.AbilityID.Equals(this.AbilityID) && ca.CardID.Equals(this.CardID) && ca.CardNumber.Equals(this.CardNumber)) return true;
+
+            return false;
+        }
     }
 }

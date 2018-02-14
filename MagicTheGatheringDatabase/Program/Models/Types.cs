@@ -13,6 +13,17 @@ namespace MagicDbContext.Models
         public int ID { get; set; }
 
         public String Name { get; set; }
-        
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (!obj.GetType().Equals(this.GetType())) return false;
+            Types t = (Types)obj;
+
+            if (t.ID.Equals(this.ID) && t.Name.Equals(this.Name)) return true;
+
+            return false;
+        }
+
     }
 }

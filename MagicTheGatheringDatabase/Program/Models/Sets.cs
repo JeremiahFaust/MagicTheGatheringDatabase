@@ -15,6 +15,17 @@ namespace MagicDbContext.Models
 
         public ICollection<Card> Cards { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (!obj.GetType().Equals(this.GetType())) return false;
+            Sets s = (Sets)obj;
+
+            if (s.SetAbbr.Equals(this.SetAbbr) && s.SetFullName.Equals(this.SetFullName)) return true;
+
+            return false;
+        }
+
         public override string ToString()
         {
             return SetAbbr + ": " + SetFullName;

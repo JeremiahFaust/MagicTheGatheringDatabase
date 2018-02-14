@@ -21,5 +21,17 @@ namespace MagicDbContext.Models
         
         public List<Card> cards { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (!obj.GetType().Equals(this.GetType())) return false;
+            MultiverseCard mc = (MultiverseCard)obj;
+
+            if (mc.MultiverseId.Equals(this.MultiverseId) && mc.SetID.Equals(this.SetID) && mc.ImagePath.Equals(this.ImagePath)) return true;
+
+
+            return false;
+        }
+
     }
 }

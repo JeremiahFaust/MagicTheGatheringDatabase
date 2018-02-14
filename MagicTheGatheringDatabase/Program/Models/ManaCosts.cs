@@ -20,10 +20,12 @@ namespace MagicDbContext.Models
 
         public override bool Equals(object obj)
         {
-            if (obj.GetType() != typeof(ManaCosts)) return false;
+            if (obj == null) return false;
+            if (!obj.GetType().Equals(this.GetType())) return false;
             ManaCosts tmp = (ManaCosts)obj;
-            if (tmp.ColorID == this.ColorID && tmp.CardID.Equals(this.CardID)) return true;
+            if (tmp.ColorID.Equals(this.ColorID) && tmp.CardID.Equals(this.CardID) && tmp.CardNumber.Equals(this.CardNumber)&& tmp.Quantity.Equals(this.Quantity)) return true;
             return false;
         }
+        
     }
 }
