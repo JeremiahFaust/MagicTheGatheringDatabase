@@ -3,6 +3,9 @@ using MagicDbContext.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MagicDbContext.Helpers;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 
 namespace MagicDbContext
 {
@@ -21,7 +24,6 @@ namespace MagicDbContext
 
         public MagicContext(DbContextOptions<MagicContext> options) : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,8 +40,8 @@ namespace MagicDbContext
                 .HasKey(cc => new { cc.CardID, cc.CardNumber, cc.TypeID });
             modelBuilder.Entity<CardTypes>().HasOne(cc => cc.Card).WithMany(c => c.CardTypes).HasForeignKey(fk=> new { fk.CardID, fk.CardNumber });
 
-            modelBuilder.Entity<Rulings>()
-                .HasKey(cc => new { cc.CardID, cc.CardNumber, cc.Ruling });
+            //modelBuilder.Entity<Rulings>()
+            //    .HasKey(cc => new { cc.CardID, cc.CardNumber, cc.Ruling });
             modelBuilder.Entity<Rulings>().HasOne(cc => cc.Cards).WithMany(c => c.Rulings).HasForeignKey(fk => new { fk.CardID, fk.CardNumber });
 
             modelBuilder.Entity<MultiverseCard>().HasMany(cc => cc.cards).WithOne(c => c.MultiverseCard).HasForeignKey(fk => fk.MultiverseID);
@@ -63,5 +65,12 @@ namespace MagicDbContext
             //modelBuilder.Entity<Cards>().HasMany(a => a.CardAbilities);
             //modelBuilder.Entity<Cards>().HasMany(r => r.Rulings).WithOne(c => c.Cards);
         }
+
+        public ObjectContext ObjectContext
+        {
+            get { return ((IObjectContextAdapter)this).ObjectContext; }
+        }
+        
+
     }
 }

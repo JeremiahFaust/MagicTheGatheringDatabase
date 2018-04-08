@@ -8,12 +8,15 @@ namespace MagicDbContext.Models
 {
     public class Rulings
     {
+        [Key]
+        public int ID { get; set; }
         public String Ruling { get; set; }
 
         public DateTime Date { get; set; }
         
         public string CardID { get; set; }
         public string CardNumber { get; set; }
+        
         public Card Cards { get; set; }
 
         public override bool Equals(object obj)

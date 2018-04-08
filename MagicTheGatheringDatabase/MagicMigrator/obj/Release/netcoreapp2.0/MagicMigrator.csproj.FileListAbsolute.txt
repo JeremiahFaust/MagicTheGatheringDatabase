@@ -1,0 +1,14 @@
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\bin\Release\netcoreapp2.0\MagicMigrator.deps.json
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\bin\Release\netcoreapp2.0\MagicMigrator.runtimeconfig.json
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\bin\Release\netcoreapp2.0\MagicMigrator.runtimeconfig.dev.json
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\bin\Release\netcoreapp2.0\MagicMigrator.dll
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\bin\Release\netcoreapp2.0\MagicMigrator.pdb
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\bin\Release\netcoreapp2.0\MagicDbContext.dll
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\bin\Release\netcoreapp2.0\MagicDbContext.pdb
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\obj\Release\netcoreapp2.0\MagicMigrator.csprojResolveAssemblyReference.cache
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\obj\Release\netcoreapp2.0\MagicMigrator.csproj.CoreCompileInputs.cache
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\obj\Release\netcoreapp2.0\MagicMigrator.AssemblyInfoInputs.cache
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\obj\Release\netcoreapp2.0\MagicMigrator.AssemblyInfo.cs
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\obj\Release\netcoreapp2.0\MagicMigrator.csproj.CopyComplete
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\obj\Release\netcoreapp2.0\MagicMigrator.dll
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\obj\Release\netcoreapp2.0\MagicMigrator.pdb

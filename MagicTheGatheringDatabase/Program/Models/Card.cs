@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace MagicDbContext.Models
 {
@@ -26,7 +25,7 @@ namespace MagicDbContext.Models
         [ForeignKey("SetID")]
         public Sets Set { get; set; }
         */
-
+        
         public String Rarity { get; set; }
 
 

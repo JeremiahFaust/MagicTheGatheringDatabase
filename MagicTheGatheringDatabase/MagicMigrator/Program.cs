@@ -1,6 +1,7 @@
 ﻿using MagicDbContext;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Diagnostics;
 
 namespace MagicMigrator
 {
@@ -8,16 +9,25 @@ namespace MagicMigrator
     {
         static void Main(string[] args)
         {
-
+            Console.WriteLine("StartTime: " + DateTime.Now);
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             DbContextOptionsBuilder<MagicContext> dbContextOptions = new DbContextOptionsBuilder<MagicContext>();
 
             dbContextOptions.EnableSensitiveDataLogging();
-            dbContextOptions.UseSqlite("Data Source=MagicDB.db", providerOptions => providerOptions.CommandTimeout(60));
+            dbContextOptions.UseSqlServer("Server=localhost\\SQLEXPRESS; Database=MagicTG; Trusted_Connection=True;", providerOptions => providerOptions.CommandTimeout(60));
 
             MagicContext ctxt = new MagicContext(dbContextOptions.Options);
 
             //DbTestInitializer db = new DbTestInitializer();
             DbInitializer db = new DbInitializer(ctxt);
+            sw.Stop();
+            Console.WriteLine("CompletionTime: " + DateTime.Now);
+            //Console.ReadLine();
+
+            Console.WriteLine("Completed");
+            Console.WriteLine(sw.Elapsed);
+            Console.ReadLine();
         }
     }
 }

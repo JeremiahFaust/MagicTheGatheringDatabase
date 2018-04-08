@@ -13,7 +13,7 @@ namespace MagicDbContext.Models
 
         public string SetFullName { get; set; }
 
-        public ICollection<Card> Cards { get; set; }
+        //public ICollection<Card> Cards { get; set; }
 
         public override bool Equals(object obj)
         {

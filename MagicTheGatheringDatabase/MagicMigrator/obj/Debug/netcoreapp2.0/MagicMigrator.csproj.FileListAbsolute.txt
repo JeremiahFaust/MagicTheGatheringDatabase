@@ -11,3 +11,4 @@ C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\Mag
 C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\obj\Debug\netcoreapp2.0\MagicMigrator.AssemblyInfo.cs
 C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\obj\Debug\netcoreapp2.0\MagicMigrator.dll
 C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\obj\Debug\netcoreapp2.0\MagicMigrator.pdb
+C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\obj\Debug\netcoreapp2.0\MagicMigrator.csproj.CopyComplete

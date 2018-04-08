@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using MagicMigrator;
@@ -7,6 +6,7 @@ using MagicDbContext;
 using MagicDbContext.Models;
 using System.Linq;
 using System.Collections;
+using Microsoft.EntityFrameworkCore;
 
 namespace MagicMigrator
 {
@@ -18,7 +18,7 @@ namespace MagicMigrator
             DbContextOptionsBuilder<MagicContext> dbContextOptions = new DbContextOptionsBuilder<MagicContext>();
 
             dbContextOptions.EnableSensitiveDataLogging();
-            dbContextOptions.UseSqlite("Data Source=MagicDB.db", providerOptions => providerOptions.CommandTimeout(60));
+            dbContextOptions.UseSqlServer("Server=localhost\\SQLEXPRESS; Database=MagicTG; Trusted_Connection=True;", providerOptions => providerOptions.CommandTimeout(60));
 
             ctxt = new MagicContext(dbContextOptions.Options);
 

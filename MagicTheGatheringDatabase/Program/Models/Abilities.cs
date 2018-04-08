@@ -20,7 +20,7 @@ namespace MagicDbContext.Models
             if (!obj.GetType().Equals(this.GetType())) return false;
             Abilities a = (Abilities)obj;
 
-            if (a.AbilityID.Equals(this.AbilityID) && a.Ability.Equals(this.Ability) && a.Description.Equals(this.Description)) return true;
+            if (a.AbilityID.Equals(this.AbilityID) && a.Ability.Equals(this.Ability)) return true;
 
             return false;    
         }

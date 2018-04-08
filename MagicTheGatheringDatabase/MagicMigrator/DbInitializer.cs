@@ -3,6 +3,9 @@ using MagicDbContext.Models;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -48,13 +51,12 @@ namespace MagicMigrator
 
         public void BeginMigration()
         {
-            FileInfo file = new FileInfo("MTGDatabase.xlsx");
+            FileInfo file = new FileInfo(@"C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\MTGDatabase.xlsx");
             BeginMigration(file);
         }
 
         public void BeginMigration(FileInfo fileInfo)
         {
-            Console.WriteLine("StartTime: " + DateTime.Now);
 
             if (!fileInfo.Exists)
                 throw new FileNotFoundException();
@@ -87,6 +89,7 @@ namespace MagicMigrator
             this._colors = SeedColors(colors);
             this._sets = SeedSets();
             this._types = SeedTypes(types);
+            this.ctxt.SaveChanges();
         }
 
         private void IniCards(ExcelWorksheet wksht, int rows)
@@ -98,20 +101,27 @@ namespace MagicMigrator
             //List<CardAbilities> cardAbilities = new List<CardAbilities>();
             //List<ManaCosts> manaCosts = new List<ManaCosts>();
 
+            int count = 0;
             for (int row = 2; row<rows+1; row++)
             {
+                count++;
+                if (count % 10000 == 0) Console.WriteLine(count);
                 string set = wksht.Cells[row, 3].Text;
                 string multiverseID = wksht.Cells[row, 1].Text;
                 
-                string imgRelPath = set + "\\" + multiverseID + ".full.jpg";
+                string imgRelPath = set + "/" + multiverseID + ".full.jpg";
 
                 MultiverseCard mc = new MultiverseCard { ImagePath = imgRelPath, MultiverseId = multiverseID, SetID = FindSets(set).SetAbbr };
 
                 ctxt.MultiverseCards.Add(mc);
-
-                ctxt.Cards.AddRange(ReadCard(wksht, row, multiverseID));
+                //ctxt.SaveChanges();
+                IEnumerable<Card> ca = ReadCard(wksht, row, multiverseID);
+                ctxt.Cards.AddRange(ca);
+                 
+                //ctxt.SaveChanges();
+                
             }
-            
+
             //ctxt.AddRange(mcards);
             //ctxt.AddRange(cards);
             //ctxt.AddRange(cardTypes);
@@ -120,8 +130,6 @@ namespace MagicMigrator
             //ctxt.AddRange(manaCosts);
             ctxt.SaveChanges();
 
-            Console.WriteLine("CompletionTime: " + DateTime.Now);
-            Console.ReadLine();
 
         }
 
@@ -160,11 +168,12 @@ namespace MagicMigrator
 
             for (int i = 0; i<cnames.Length; i++)
             {
-                Card c = new Card { MultiverseID = multiverseID, CardNumber = cardnumber + alphabet[i], Artist = artist, CardName = (cnames.Length>i)?cnames[i].Trim():"", FlavorText = (flavortext.Length>i)?flavortext[i].Trim():"", HighPrice = highprice, LowPrice = lowprice, MidPrice = midprice, Power = (power.Length>i)?power[i].Trim().AsOrDefault<int>():0, Toughness = (toughness.Length>i)?toughness[i].Trim().AsOrDefault<int>():0, Rarity = rarity, Rating = rating, ConvertedManaCost = (convertedmanacost.Length>i)?convertedmanacost[i].Trim().AsOrDefault<int>():0, IsDualCard = true };
+                string s = (cnames.Length > i) ? cnames[i].Trim() : "";
+                Card c = new Card { MultiverseID = multiverseID, CardNumber = cardnumber + alphabet[i], Artist = artist, CardName = s, FlavorText = (flavortext.Length>i)?flavortext[i].Trim():"", HighPrice = highprice, LowPrice = lowprice, MidPrice = midprice, Power = (power.Length>i)?power[i].Trim().AsOrDefault<int>():0, Toughness = (toughness.Length>i)?toughness[i].Trim().AsOrDefault<int>():0, Rarity = rarity, Rating = rating, ConvertedManaCost = (convertedmanacost.Length>i)?convertedmanacost[i].Trim().AsOrDefault<int>():0, IsDualCard = true };
 
                 cards.Add(c);
                 iniCardSubAttributesDual(wksht, row, multiverseID, cardnumber + alphabet[i], i);
-                Console.WriteLine(cnames[i]);
+                //Console.WriteLine(cnames[i]);
 
             }
 
@@ -196,7 +205,7 @@ namespace MagicMigrator
             iniCardSubAttributes(wksht, row, multiverseID, cardnumber);
 
 
-            Console.WriteLine(cardname);
+            //Console.WriteLine(cardname);
             return cards;
         }
         
@@ -487,6 +496,7 @@ namespace MagicMigrator
             string[] rulings = unsplit.Split('£');
             foreach (string s in rulings)
             {
+                if (string.IsNullOrEmpty(s)) continue;
                 ruling.Add(s);
             }
         }

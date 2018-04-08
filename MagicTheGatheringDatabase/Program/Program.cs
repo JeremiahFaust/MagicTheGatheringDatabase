@@ -9,7 +9,7 @@ namespace MagicDbContext
         {
             DbContextOptionsBuilder<MagicContext> dbContextOptions = new DbContextOptionsBuilder<MagicContext>();
 
-            dbContextOptions.UseSqlite("Data Source=MagicDB.db", providerOptions => providerOptions.CommandTimeout(60));
+            dbContextOptions.UseSqlServer("Server=localhost\\SQLEXPRESS; Database=MagicTG; Trusted_Connection=True;", providerOptions => providerOptions.CommandTimeout(60));
 
             MagicContext ctx = new MagicContext(dbContextOptions.Options);
             ctx.Database.EnsureCreated();
