@@ -8,7 +8,9 @@ namespace MagicDbContext.Models
 {
     public class ManaCosts
     {
+        [MaxLength(20)]
         public string CardID { get; set; }
+        [MaxLength(20)]
         public string CardNumber { get; set; }
         public int ColorID { get; set; }
         public int Quantity { get; set; }

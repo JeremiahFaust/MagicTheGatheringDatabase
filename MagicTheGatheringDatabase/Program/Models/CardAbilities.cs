@@ -12,8 +12,9 @@ namespace MagicDbContext.Models
         public int AbilityID { get; set; }
         public Abilities Ability { get; set; }
 
-        
+        [MaxLength(20)]
         public string CardID { get; set; }
+        [MaxLength(20)]
         public string CardNumber { get; set; }
 
         public Card Card { get; set; }

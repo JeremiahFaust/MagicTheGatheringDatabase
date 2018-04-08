@@ -10,10 +10,12 @@ namespace MagicDbContext.Models
     [Table("Cards")]
     public class Card
     {
+        [MaxLength(20)]
         public string MultiverseID { get; set; }
 
         public MultiverseCard MultiverseCard { get; set; }
 
+        [MaxLength(20)]
         public string CardNumber { get; set; }
 
         [Required]

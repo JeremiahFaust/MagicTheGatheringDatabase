@@ -9,9 +9,10 @@ namespace MagicDbContext.Models
     public class MultiverseCard
     {
         [Key]
+        [MaxLength(20)]
         public string MultiverseId { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string SetID { get; set; }
 
         [ForeignKey("SetID")]

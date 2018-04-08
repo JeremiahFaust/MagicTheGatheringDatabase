@@ -12,7 +12,9 @@ namespace MagicDbContext.Models
         public int TypeID { get; set; }
         public Types Type { get; set; }
         
+        [MaxLength(20)]
         public string CardID { get; set; }
+        [MaxLength(20)]
         public string CardNumber { get; set; }
         public Card Card { get; set; }
 

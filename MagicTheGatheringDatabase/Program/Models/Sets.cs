@@ -8,7 +8,7 @@ namespace MagicDbContext.Models
     public class Sets
     {
         [Key]
-        [MaxLength(10)]
+        [MaxLength(20)]
         public String SetAbbr { get; set; }
 
         public string SetFullName { get; set; }

@@ -14,7 +14,9 @@ namespace MagicDbContext.Models
 
         public DateTime Date { get; set; }
         
+        [MaxLength(20)]
         public string CardID { get; set; }
+        [MaxLength(20)]
         public string CardNumber { get; set; }
         
         public Card Cards { get; set; }
