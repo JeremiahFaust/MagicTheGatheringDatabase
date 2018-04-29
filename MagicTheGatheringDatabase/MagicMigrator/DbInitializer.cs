@@ -21,6 +21,7 @@ namespace MagicMigrator
         private IEnumerable<Types> _types;
         private IEnumerable<Sets> _sets;
         private IEnumerable<Abilities> _abilities;
+        private IEnumerable<CardRarity> _rarities;
 
         Color FindColor(string name, string symbol) => _colors.Where(f => f.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && f.Symbol.Equals(symbol)).FirstOrDefault();
 
@@ -30,6 +31,13 @@ namespace MagicMigrator
         Sets FindSets(string name) => _sets.Where(f => f.SetAbbr.Equals(name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
         Abilities FindAbility(string ability) => _abilities.Where(a => a.Ability.Equals(ability, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+
+        CardRarity FindRarity(string rarity)
+        {
+            if (string.IsNullOrWhiteSpace(rarity)) rarity = " ";
+
+            return _rarities.First(r => r.Id == rarity);
+        }
 
 
         private char[] alphabet = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p' };
@@ -51,8 +59,31 @@ namespace MagicMigrator
 
         public void BeginMigration()
         {
+            SeedDatabase();
             FileInfo file = new FileInfo(@"C:\Users\jd\source\repos\MagicTheGatheringDatabase\MagicTheGatheringDatabase\MagicMigrator\MTGDatabase.xlsx");
             BeginMigration(file);
+        }
+
+        private void SeedDatabase()
+        {
+            SeedCardRarities();
+        }
+
+        private void SeedCardRarities()
+        {
+            ctxt.CardRarities.AddRange(new []
+            {
+                new CardRarity{ Id="T", Name = "Special"},
+                new CardRarity{ Id=" ", Name = "Other"},
+                new CardRarity{ Id="C", Name = "Common"},
+                new CardRarity{ Id="U", Name="UnCommon"},
+                new CardRarity{ Id="R", Name = "Rare"},
+                new CardRarity{ Id="M", Name = "Mythic Rare"}
+            });
+
+            ctxt.SaveChanges();
+
+            _rarities = ctxt.CardRarities.ToArray();
         }
 
         public void BeginMigration(FileInfo fileInfo)
@@ -169,7 +200,7 @@ namespace MagicMigrator
             for (int i = 0; i<cnames.Length; i++)
             {
                 string s = (cnames.Length > i) ? cnames[i].Trim() : "";
-                Card c = new Card { MultiverseID = multiverseID, CardNumber = cardnumber + alphabet[i], Artist = artist, CardName = s, FlavorText = (flavortext.Length>i)?flavortext[i].Trim():"", HighPrice = highprice, LowPrice = lowprice, MidPrice = midprice, Power = (power.Length>i)?power[i].Trim().AsOrDefault<int>():0, Toughness = (toughness.Length>i)?toughness[i].Trim().AsOrDefault<int>():0, Rarity = rarity, Rating = rating, ConvertedManaCost = (convertedmanacost.Length>i)?convertedmanacost[i].Trim().AsOrDefault<int>():0, IsDualCard = true };
+                Card c = new Card { MultiverseID = multiverseID, CardNumber = cardnumber + alphabet[i], Artist = artist, CardName = s, FlavorText = (flavortext.Length>i)?flavortext[i].Trim():"", HighPrice = highprice, LowPrice = lowprice, MidPrice = midprice, Power = (power.Length>i)?power[i].Trim().AsOrDefault<int>():0, Toughness = (toughness.Length>i)?toughness[i].Trim().AsOrDefault<int>():0, Rarity = FindRarity(rarity), Rating = rating, ConvertedManaCost = (convertedmanacost.Length>i)?convertedmanacost[i].Trim().AsOrDefault<int>():0, IsDualCard = true };
 
                 cards.Add(c);
                 iniCardSubAttributesDual(wksht, row, multiverseID, cardnumber + alphabet[i], i);
@@ -198,7 +229,7 @@ namespace MagicMigrator
             int convertedmanacost = wksht.Cells[row, 7].Text.AsOrDefault<Int32>();
             bool isDual = false;
 
-            Card c = new Card { MultiverseID = multiverseID, CardNumber = cardnumber, Artist = artist, CardName = cardname, FlavorText = wksht.Cells[row, 12].Text, HighPrice = highprice, LowPrice = lowprice, MidPrice = midprice, Power = power, Toughness = toughness, Rarity = rarity, Rating = rating, ConvertedManaCost = convertedmanacost, IsDualCard = isDual };
+            Card c = new Card { MultiverseID = multiverseID, CardNumber = cardnumber, Artist = artist, CardName = cardname, FlavorText = wksht.Cells[row, 12].Text, HighPrice = highprice, LowPrice = lowprice, MidPrice = midprice, Power = power, Toughness = toughness, RarityId = rarity, Rating = rating, ConvertedManaCost = convertedmanacost, IsDualCard = isDual };
 
             cards.Add(c);
 

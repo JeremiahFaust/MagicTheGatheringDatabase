@@ -18,7 +18,7 @@ namespace MagicMigrator
             DbContextOptionsBuilder<MagicContext> dbContextOptions = new DbContextOptionsBuilder<MagicContext>();
 
             dbContextOptions.EnableSensitiveDataLogging();
-            dbContextOptions.UseSqlServer("Server=localhost\\SQLEXPRESS; Database=MagicTG; Trusted_Connection=True;", providerOptions => providerOptions.CommandTimeout(60));
+            dbContextOptions.UseSqlServer("Data Source=localhost\\SQLEXPRESS; initial catalog=MagicTG; user=JD; password=7a521039", providerOptions => providerOptions.CommandTimeout(60));
 
             ctxt = new MagicContext(dbContextOptions.Options);
 
@@ -108,7 +108,7 @@ namespace MagicMigrator
 
             var Cards = new Card[]
             {
-                new Card { MultiverseID="423808", Artist="Kieran Yanner", CardName="Aegis Automaton", FlavorText="#_The streets of Ghirapur have become dangerous. It's good to have a dependable companion._#", HighPrice=0.95, LowPrice=0.01, MidPrice=0.1, Power= 0, Toughness=3, Rarity="C", Rating=5}
+                new Card { MultiverseID="423808", Artist="Kieran Yanner", CardName="Aegis Automaton", FlavorText="#_The streets of Ghirapur have become dangerous. It's good to have a dependable companion._#", HighPrice=0.95, LowPrice=0.01, MidPrice=0.1, Power= 0, Toughness=3, RarityId= "C", Rating=5}
             };
 
             ctxt.Cards.AddRange(Cards);

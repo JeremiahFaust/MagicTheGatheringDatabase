@@ -3519,11 +3519,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jd\\source\\repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\Program\\MagicDbContext.csproj",
+      "projectUniqueName": "C:\\Users\\jd\\Source\\Repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\Program\\MagicDbContext.csproj",
       "projectName": "MagicDbContext",
-      "projectPath": "C:\\Users\\jd\\source\\repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\Program\\MagicDbContext.csproj",
+      "projectPath": "C:\\Users\\jd\\Source\\Repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\Program\\MagicDbContext.csproj",
       "packagesPath": "C:\\Users\\jd\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jd\\source\\repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\Program\\obj\\",
+      "outputPath": "C:\\Users\\jd\\Source\\Repos\\MagicTheGatheringDatabase\\MagicTheGatheringDatabase\\Program\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

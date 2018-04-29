@@ -15,7 +15,7 @@ namespace MagicMigrator
             DbContextOptionsBuilder<MagicContext> dbContextOptions = new DbContextOptionsBuilder<MagicContext>();
 
             dbContextOptions.EnableSensitiveDataLogging();
-            dbContextOptions.UseSqlServer("Server=localhost\\SQLEXPRESS; Database=MagicTG; Trusted_Connection=True;", providerOptions => providerOptions.CommandTimeout(60));
+            dbContextOptions.UseSqlServer("Data Source=localhost\\SQLEXPRESS; initial catalog=MagicTG; Trusted_Connection=True", providerOptions => providerOptions.CommandTimeout(60));
 
             MagicContext ctxt = new MagicContext(dbContextOptions.Options);
 

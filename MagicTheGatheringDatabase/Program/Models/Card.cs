@@ -28,7 +28,8 @@ namespace MagicDbContext.Models
         public Sets Set { get; set; }
         */
         
-        public String Rarity { get; set; }
+        [MaxLength(1)]
+        public string RarityId { get; set; }
 
 
         public int ConvertedManaCost { get; set; }
@@ -41,6 +42,9 @@ namespace MagicDbContext.Models
         public String Artist { get; set; }
 
         public int Rating { get; set; }
+
+        [ForeignKey("RarityId")]
+        public CardRarity Rarity { get; set; }
         
         public ICollection<Rulings> Rulings { get; set; }
         public ICollection<CardAbilities> CardAbilities { get; set; }
@@ -59,7 +63,8 @@ namespace MagicDbContext.Models
             if (obj == null) return false;
             if (obj.GetType() != this.GetType()) return false;
             Card c = (Card)obj;
-            if (c.MultiverseID.Equals(this.MultiverseID) && c.CardNumber.Equals(this.CardNumber) && c.CardName.Equals(this.CardName) && c.ConvertedManaCost.Equals(this.ConvertedManaCost) && c.FlavorText.Equals(this.FlavorText) && c.Rarity.Equals(this.Rarity) && c.Power.Equals(this.Power) && c.Toughness.Equals(this.Toughness) && c.Rating.Equals(this.Rating) && c.MidPrice.Equals(this.MidPrice) && c.LowPrice.Equals(this.LowPrice) && c.HighPrice.Equals(this.HighPrice) && c.Artist.Equals(this.Artist) && c.IsDualCard.Equals(this.IsDualCard)) return true;
+            if (this.MultiverseID == c.MultiverseID && this.CardNumber == c.CardNumber) return true;
+            //if (c.MultiverseID.Equals(this.MultiverseID) && c.CardNumber.Equals(this.CardNumber) && c.CardName.Equals(this.CardName) && c.ConvertedManaCost.Equals(this.ConvertedManaCost) && c.FlavorText.Equals(this.FlavorText) && c.Rarity.Equals(this.Rarity) && c.Power.Equals(this.Power) && c.Toughness.Equals(this.Toughness) && c.Rating.Equals(this.Rating) && c.MidPrice.Equals(this.MidPrice) && c.LowPrice.Equals(this.LowPrice) && c.HighPrice.Equals(this.HighPrice) && c.Artist.Equals(this.Artist) && c.IsDualCard.Equals(this.IsDualCard)) return true;
             return false;
         }
 

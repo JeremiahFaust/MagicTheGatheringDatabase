@@ -21,6 +21,7 @@ namespace MagicDbContext
         public DbSet<Color> Color { get; set; }
         public DbSet<CardAbilities> CardAbilities { get; set; }
         public DbSet<CardTypes> CardTypes { get; set; }
+        public DbSet<CardRarity> CardRarities { get; set; }
 
         public MagicContext(DbContextOptions<MagicContext> options) : base(options)
         {
