@@ -28,6 +28,7 @@ namespace MagicMigrator
             Console.WriteLine("Completed");
             Console.WriteLine(sw.Elapsed);
             Console.ReadLine();
+            
         }
     }
 }

@@ -3,7 +3,6 @@ using MagicDbContext.Models;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.IO;
@@ -132,6 +131,8 @@ namespace MagicMigrator
             //List<CardAbilities> cardAbilities = new List<CardAbilities>();
             //List<ManaCosts> manaCosts = new List<ManaCosts>();
 
+            HashSet<string> cardNames = new HashSet<string>();
+
             int count = 0;
             for (int row = 2; row<rows+1; row++)
             {
@@ -147,6 +148,19 @@ namespace MagicMigrator
                 ctxt.MultiverseCards.Add(mc);
                 //ctxt.SaveChanges();
                 IEnumerable<Card> ca = ReadCard(wksht, row, multiverseID);
+
+                foreach (var card in ca)
+                {
+                    if (!cardNames.Contains(card.CardName))
+                    {
+                        ctxt.CardSets.Add(new CardSets {Name = card.CardName, DisplayCard = card.MultiverseCard, MultiverseId = card.MultiverseID});
+                        cardNames.Add(card.CardName);
+
+                    }
+                }
+
+                //ctxt.SaveChanges();
+
                 ctxt.Cards.AddRange(ca);
                  
                 //ctxt.SaveChanges();

@@ -19,6 +19,7 @@ namespace MagicDbContext.Models
         public string CardNumber { get; set; }
 
         [Required]
+        [MaxLength(255)]
         public String CardName { get; set; }
 
         /*
@@ -45,6 +46,9 @@ namespace MagicDbContext.Models
 
         [ForeignKey("RarityId")]
         public CardRarity Rarity { get; set; }
+
+        [ForeignKey("CardName")]
+        public CardSets CardSets { get; set; }
         
         public ICollection<Rulings> Rulings { get; set; }
         public ICollection<CardAbilities> CardAbilities { get; set; }

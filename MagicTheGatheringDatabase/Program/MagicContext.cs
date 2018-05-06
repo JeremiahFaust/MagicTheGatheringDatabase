@@ -3,9 +3,7 @@ using MagicDbContext.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MagicDbContext.Helpers;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
+//using MagicDbContext.Helpers;
 
 namespace MagicDbContext
 {
@@ -22,6 +20,7 @@ namespace MagicDbContext
         public DbSet<CardAbilities> CardAbilities { get; set; }
         public DbSet<CardTypes> CardTypes { get; set; }
         public DbSet<CardRarity> CardRarities { get; set; }
+        public DbSet<CardSets> CardSets { get; set; }
 
         public MagicContext(DbContextOptions<MagicContext> options) : base(options)
         {
@@ -65,11 +64,6 @@ namespace MagicDbContext
             //modelBuilder.Entity<Cards>().HasMany(m => m.ManaCosts);
             //modelBuilder.Entity<Cards>().HasMany(a => a.CardAbilities);
             //modelBuilder.Entity<Cards>().HasMany(r => r.Rulings).WithOne(c => c.Cards);
-        }
-
-        public ObjectContext ObjectContext
-        {
-            get { return ((IObjectContextAdapter)this).ObjectContext; }
         }
         
 
